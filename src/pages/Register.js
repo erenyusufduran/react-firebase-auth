@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, Link } from "react-router-dom";
 import "./Register.css";
+import { registerInitiate } from "../redux/actions";
 
 const Register = () => {
   const [state, setState] = useState({
@@ -10,9 +11,33 @@ const Register = () => {
     password: "",
     passwordConfirm: "",
   });
+
+  const { currentUser } = useSelector((state) => state.user);
+  const history = useHistory();
+
+  useEffect(() => {
+    if (currentUser) {
+      history.push("/");
+    }
+  }, [currentUser, history]);
+
+  const dispatch = useDispatch();
   const { email, password, displayName, passwordConfirm } = state;
-  const handleSubmit = () => {};
-  const handleChange = () => {};
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (password !== passwordConfirm) {
+      return;
+    }
+    dispatch(registerInitiate(email, password, displayName));
+    setState({ email: "", displayName: "", password: "", passwordConfirm: "" });
+  };
+
+  const handleChange = (e) => {
+    let { name, value } = e.target;
+    setState({ ...state, [name]: value });
+  };
+
   return (
     <div>
       <div id="register-form">
@@ -66,9 +91,9 @@ const Register = () => {
           <button className="btn btn-primary btn-block" type="submit">
             <i className="fas fa-user-plus"></i> Sign Up
           </button>
-            <Link to="/login">
-                <i className="fas fa-angle-left"></i> Back to Login
-                </Link>
+          <Link to="/login">
+            <i className="fas fa-angle-left"></i> Back to Login
+          </Link>
         </form>
       </div>
     </div>
