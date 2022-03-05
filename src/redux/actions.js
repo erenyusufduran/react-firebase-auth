@@ -29,6 +29,20 @@ const loginFail = (error) => ({
   payload: error,
 });
 
+const logoutStart = () => ({
+  type: types.LOGOUT_START,
+});
+
+const logoutSuccess = (user) => ({
+  type: types.LOGOUT_SUCCESS,
+  payload: user,
+});
+
+const logoutFail = (error) => ({
+  type: types.LOGOUT_FAIL,
+  payload: error,
+});
+
 export const registerInitiate = (email, password, displayName) => {
   return function (dispatch) {
     dispatch(registerStart());
@@ -53,6 +67,16 @@ export const loginInitiate = (email, password) => {
         dispatch(loginSuccess(user));
       })
       .catch((error) => dispatch(loginFail(error.message)));
+  };
+};
+
+export const logoutInitiate = () => {
+  return function (dispatch) {
+    dispatch(logoutStart());
+    auth
+      .signOut()
+      .then((resp) => dispatch(logoutSuccess(resp)))
+      .catch((error) => dispatch(logoutFail(error.message)));
   };
 };
 
