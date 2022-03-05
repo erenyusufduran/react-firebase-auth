@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, Link } from "react-router-dom";
-import { loginInitiate } from "../redux/actions";
+import { googleSignInInitiate, loginInitiate } from "../redux/actions";
 import "./Login.css";
 
 const Login = () => {
@@ -22,7 +22,9 @@ const Login = () => {
 
   const dispatch = useDispatch();
 
-  const handleGoogleSignIn = () => {};
+  const handleGoogleSignIn = () => {
+    dispatch(googleSignInInitiate());
+  };
   const handleFBSignIn = () => {};
   const handleSubmit = (e) => {
     e.preventDefault();
