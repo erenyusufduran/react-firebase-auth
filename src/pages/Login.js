@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, Link } from "react-router-dom";
+import { loginInitiate } from "../redux/actions";
 import "./Login.css";
 
 const Login = () => {
@@ -9,10 +10,33 @@ const Login = () => {
     password: "",
   });
   const { email, password } = state;
+
+  const { currentUser } = useSelector((state) => state.user);
+  const history = useHistory();
+
+  useEffect(() => {
+    if (currentUser) {
+      history.push("/");
+    }
+  }, [currentUser, history]);
+
+  const dispatch = useDispatch();
+
   const handleGoogleSignIn = () => {};
   const handleFBSignIn = () => {};
-  const handleSubmit = () => {};
-  const handleChange = () => {};
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!email || !password) {
+      return;
+    }
+    dispatch(loginInitiate(email, password));
+    setState({ email: "", password: "" });
+  };
+
+  const handleChange = (e) => {
+    let { name, value } = e.target;
+    setState({ ...state, [name]: value });
+  };
   return (
     <div>
       <div id="logreg-forms">
