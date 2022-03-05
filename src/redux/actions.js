@@ -1,5 +1,5 @@
 import * as types from "./actionTypes";
-import { auth, googleAuthProvider } from "./firebase";
+import { auth, facebookAuthProvider, googleAuthProvider } from "./firebase";
 
 const registerStart = () => ({
   type: types.REGISTER_START,
@@ -62,6 +62,20 @@ const googleSignInFail = (error) => ({
   payload: error,
 });
 
+const facebookSignInStart = () => ({
+  type: types.FACEBOOK_SIGN_IN_START,
+});
+
+const facebookSignInSuccess = (user) => ({
+  type: types.FACEBOOK_SIGN_IN_SUCCESS,
+  payload: user,
+});
+
+const facebookSignInFail = (error) => ({
+  type: types.FACEBOOK_SIGN_IN_FAIL,
+  payload: error,
+});
+
 export const registerInitiate = (email, password, displayName) => {
   return function (dispatch) {
     dispatch(registerStart());
@@ -110,3 +124,16 @@ export const googleSignInInitiate = () => {
       .catch((error) => dispatch(googleSignInFail(error.message)));
   };
 };
+
+export const fbSignInInitiate = () => {
+  return function (dispatch) {
+    dispatch(facebookSignInStart());
+    auth
+      .signInWithPopup(facebookAuthProvider.addScope("user_birthday, email"))
+      .then(({ user }) => {
+        dispatch(facebookSignInSuccess(user));
+      })
+      .catch((error) => dispatch(facebookSignInFail(error.message)));
+  };
+};
+
