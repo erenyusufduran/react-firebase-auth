@@ -15,7 +15,7 @@ const userReducer = (state = initialState, action) => {
         ...state,
         loading: true,
       };
-    case types.LOGOUT_START:
+    case types.LOGOUT_SUCCESS:
       return {
         ...state,
         currentUser: null,

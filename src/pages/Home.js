@@ -5,7 +5,6 @@ import { logoutInitiate } from "../redux/actions";
 const Home = () => {
   const { currentUser } = useSelector((state) => state.user);
   const dispatch = useDispatch();
-
   const handleAuth = () => {
     if (currentUser) {
       dispatch(logoutInitiate());
