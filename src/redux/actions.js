@@ -1,3 +1,4 @@
+import { type } from "@testing-library/user-event/dist/type";
 import * as types from "./actionTypes";
 import { auth } from "./firebase";
 
@@ -43,6 +44,11 @@ const logoutFail = (error) => ({
   payload: error,
 });
 
+export const setUser = (user) => ({
+  type: types.SET_USER,
+  payload: user,
+});
+
 export const registerInitiate = (email, password, displayName) => {
   return function (dispatch) {
     dispatch(registerStart());
@@ -79,4 +85,3 @@ export const logoutInitiate = () => {
       .catch((error) => dispatch(logoutFail(error.message)));
   };
 };
-
